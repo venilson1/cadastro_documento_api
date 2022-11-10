@@ -10,7 +10,7 @@ namespace cadastro_documento_api.Source.Core.DTOs
         [Required(ErrorMessage = "O Campo Processo é obrigatório")]
         public int ProcessoId { get; set; }
         [Required(ErrorMessage = "O Campo Título é obrigatório")]
-        public int Titulo { get; set; }
+        public string Titulo { get; set; }
         [Required(ErrorMessage = "O Campo Categoria é obrigatório")]
         public string Categoria { get; set; }
         [Required(ErrorMessage = "O Campo Arquivo é obrigatório")]
