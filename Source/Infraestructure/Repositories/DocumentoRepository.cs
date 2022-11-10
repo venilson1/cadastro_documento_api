@@ -38,7 +38,16 @@ namespace cadastro_documento_api.Source.Infraestructure.Repositories
 
         public async Task<DocumentoEntity> FindById(int id)
         {
-            return await _dbContex.Documento.FirstOrDefaultAsync(x => x.Id == id);
+            return await _dbContex.Documento.Select(x => new DocumentoEntity 
+            { 
+                Id = x.Id,
+                Arquivo = x.Arquivo,
+                Categoria = x.Categoria,
+                Codigo = x.Codigo,
+                Titulo = x.Titulo,
+                ProcessoId = x.ProcessoId,
+                Processo = x.Processo,
+            }).FirstOrDefaultAsync(x => x.Id == id);
         }
     }
 }
