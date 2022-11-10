@@ -5,6 +5,7 @@ namespace cadastro_documento_api.Source.Core.Entities
     public class DocumentoEntity
     {
         [Key]
+        [Required]
         public int Id { get; set; }
         public int Codigo { get; set; }
         public int Titulo { get; set; }
