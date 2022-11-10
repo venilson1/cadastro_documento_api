@@ -1,11 +1,14 @@
 using cadastro_documento_api.Source.Core.Interfaces.Repositories;
+using cadastro_documento_api.Source.Infraestructure.Contexts;
 using cadastro_documento_api.Source.Infraestructure.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddScoped<IDocumentoRepository, DocumentoRepository>();
+builder.Services.AddDbContext<CadastroDocumentosContex>(options => options.UseMySql("server=localhost;database=homedb;user=root;password=root", ServerVersion.Parse("8.0.31-mysql")));
 
 builder.Services.AddControllers();
 
