@@ -33,7 +33,15 @@ namespace cadastro_documento_api.Source.Infraestructure.Repositories
 
         public async Task<List<DocumentoEntity>> FindAll(int page)
         {
-            return await _dbContex.Documento.OrderBy(x => x.Titulo).AsNoTracking().Skip((page * 8)).Take(8).ToListAsync();
+            return await _dbContex.Documento.Select(x => new DocumentoEntity {
+                Id = x.Id,
+                Arquivo = x.Arquivo,
+                Categoria = x.Categoria,
+                Codigo = x.Codigo,
+                Titulo = x.Titulo,
+                ProcessoId = x.ProcessoId,
+                Processo = x.Processo,
+            }).OrderBy(x => x.Titulo).AsNoTracking().Skip((page * 8)).Take(8).ToListAsync();
         }
 
         public async Task<DocumentoEntity> FindById(int id)
