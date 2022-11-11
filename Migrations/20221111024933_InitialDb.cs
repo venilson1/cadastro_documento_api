@@ -36,7 +36,8 @@ namespace cadastro_documento_api.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Codigo = table.Column<int>(type: "int", nullable: false),
-                    Titulo = table.Column<int>(type: "int", nullable: false),
+                    Titulo = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     Categoria = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Arquivo = table.Column<string>(type: "longtext", nullable: false)
@@ -61,17 +62,16 @@ namespace cadastro_documento_api.Migrations
                 columns: new[] { "Id", "CriadoEm", "Nome" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2022, 11, 10, 18, 40, 11, 727, DateTimeKind.Local).AddTicks(7292), "A" },
-                    { 2, new DateTime(2022, 11, 10, 18, 40, 11, 727, DateTimeKind.Local).AddTicks(7305), "B" },
-                    { 3, new DateTime(2022, 11, 10, 18, 40, 11, 727, DateTimeKind.Local).AddTicks(7307), "C" },
-                    { 4, new DateTime(2022, 11, 10, 18, 40, 11, 727, DateTimeKind.Local).AddTicks(7307), "D" }
+                    { 1, new DateTime(2022, 11, 10, 23, 49, 33, 136, DateTimeKind.Local).AddTicks(5292), "A" },
+                    { 2, new DateTime(2022, 11, 10, 23, 49, 33, 136, DateTimeKind.Local).AddTicks(5312), "B" },
+                    { 3, new DateTime(2022, 11, 10, 23, 49, 33, 136, DateTimeKind.Local).AddTicks(5314), "C" },
+                    { 4, new DateTime(2022, 11, 10, 23, 49, 33, 136, DateTimeKind.Local).AddTicks(5315), "D" }
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Documento_ProcessoId",
                 table: "Documento",
-                column: "ProcessoId",
-                unique: true);
+                column: "ProcessoId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

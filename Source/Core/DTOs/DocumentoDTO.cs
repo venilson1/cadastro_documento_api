@@ -14,6 +14,6 @@ namespace cadastro_documento_api.Source.Core.DTOs
         [Required(ErrorMessage = "O Campo Categoria é obrigatório")]
         public string Categoria { get; set; }
         [Required(ErrorMessage = "O Campo Arquivo é obrigatório")]
-        public string Arquivo { get; set; }
+        public IFormFile Arquivo { get; set; }
     }
 }

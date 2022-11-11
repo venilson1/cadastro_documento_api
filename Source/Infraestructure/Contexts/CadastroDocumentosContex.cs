@@ -13,10 +13,10 @@ namespace cadastro_documento_api.Source.Infraestructure.Contexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            modelBuilder.Entity<ProcessoEntity>()
-                .HasOne(processo => processo.Documento)
-                .WithOne(documento => documento.Processo)
-                .HasForeignKey<DocumentoEntity>(documento => documento.ProcessoId);
+            modelBuilder.Entity<DocumentoEntity>()
+                .HasOne(documento => documento.Processo)
+                .WithMany(processo => processo.Documentos)
+                .HasForeignKey(documento => documento.ProcessoId);
 
             modelBuilder.Entity<ProcessoEntity>().HasData(
                 new ProcessoEntity { Id = 1, Nome = "A", CriadoEm = DateTime.Now },

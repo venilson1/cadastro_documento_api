@@ -11,7 +11,7 @@ using cadastro_documento_api.Source.Infraestructure.Contexts;
 namespace cadastro_documento_api.Migrations
 {
     [DbContext(typeof(CadastroDocumentosContex))]
-    [Migration("20221110214011_InitialDb")]
+    [Migration("20221111024933_InitialDb")]
     partial class InitialDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,13 +44,13 @@ namespace cadastro_documento_api.Migrations
                     b.Property<int>("ProcessoId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Titulo")
-                        .HasColumnType("int");
+                    b.Property<string>("Titulo")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProcessoId")
-                        .IsUnique();
+                    b.HasIndex("ProcessoId");
 
                     b.ToTable("Documento");
                 });
@@ -76,25 +76,25 @@ namespace cadastro_documento_api.Migrations
                         new
                         {
                             Id = 1,
-                            CriadoEm = new DateTime(2022, 11, 10, 18, 40, 11, 727, DateTimeKind.Local).AddTicks(7292),
+                            CriadoEm = new DateTime(2022, 11, 10, 23, 49, 33, 136, DateTimeKind.Local).AddTicks(5292),
                             Nome = "A"
                         },
                         new
                         {
                             Id = 2,
-                            CriadoEm = new DateTime(2022, 11, 10, 18, 40, 11, 727, DateTimeKind.Local).AddTicks(7305),
+                            CriadoEm = new DateTime(2022, 11, 10, 23, 49, 33, 136, DateTimeKind.Local).AddTicks(5312),
                             Nome = "B"
                         },
                         new
                         {
                             Id = 3,
-                            CriadoEm = new DateTime(2022, 11, 10, 18, 40, 11, 727, DateTimeKind.Local).AddTicks(7307),
+                            CriadoEm = new DateTime(2022, 11, 10, 23, 49, 33, 136, DateTimeKind.Local).AddTicks(5314),
                             Nome = "C"
                         },
                         new
                         {
                             Id = 4,
-                            CriadoEm = new DateTime(2022, 11, 10, 18, 40, 11, 727, DateTimeKind.Local).AddTicks(7307),
+                            CriadoEm = new DateTime(2022, 11, 10, 23, 49, 33, 136, DateTimeKind.Local).AddTicks(5315),
                             Nome = "D"
                         });
                 });
@@ -102,8 +102,8 @@ namespace cadastro_documento_api.Migrations
             modelBuilder.Entity("cadastro_documento_api.Source.Core.Entities.DocumentoEntity", b =>
                 {
                     b.HasOne("cadastro_documento_api.Source.Core.Entities.ProcessoEntity", "Processo")
-                        .WithOne("Documento")
-                        .HasForeignKey("cadastro_documento_api.Source.Core.Entities.DocumentoEntity", "ProcessoId")
+                        .WithMany("Documentos")
+                        .HasForeignKey("ProcessoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -112,8 +112,7 @@ namespace cadastro_documento_api.Migrations
 
             modelBuilder.Entity("cadastro_documento_api.Source.Core.Entities.ProcessoEntity", b =>
                 {
-                    b.Navigation("Documento")
-                        .IsRequired();
+                    b.Navigation("Documentos");
                 });
 #pragma warning restore 612, 618
         }

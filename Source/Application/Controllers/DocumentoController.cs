@@ -2,6 +2,7 @@
 using cadastro_documento_api.Source.Core.Entities;
 using cadastro_documento_api.Source.Core.Interfaces.Repositories;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Mvc;
 
 namespace cadastro_documento_api.Source.Application.Controllers
@@ -34,13 +35,21 @@ namespace cadastro_documento_api.Source.Application.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<DocumentoEntity>> Create([FromBody] DocumentoDTO docDTO)
+        public async Task<ActionResult<DocumentoEntity>> Create([FromForm] DocumentoDTO docDTO)
         {
+            using (var stream = new MemoryStream())
+            {
+                await docDTO.Arquivo.CopyToAsync(stream);
+                stream.ToArray();
+
+                File(stream.ToArray(), docDTO.Arquivo.ContentType, docDTO.Arquivo.FileName);
+            }
+
             DocumentoEntity doc = new()
             {
                 Codigo = docDTO.Codigo,
                 Categoria = docDTO.Categoria,
-                Arquivo = docDTO.Arquivo,
+                Arquivo = docDTO.Arquivo.ContentType,
                 Titulo = docDTO.Titulo,
                 ProcessoId = docDTO.ProcessoId,
                 CriadoEm = DateTime.Now
@@ -48,6 +57,13 @@ namespace cadastro_documento_api.Source.Application.Controllers
 
             await _docRepository.Create(doc);
             return CreatedAtAction(nameof(FindById), new { Id = doc.Id }, doc);
+        }
+
+        [HttpPost("upload")]
+        public async Task<ActionResult<DocumentoEntity>> Upload([FromForm] ICollection<IFormFile> files)
+        {
+
+            return Ok(files);
         }
 
         [HttpGet("{id}")]
