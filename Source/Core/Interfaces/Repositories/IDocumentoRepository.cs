@@ -8,5 +8,6 @@ namespace cadastro_documento_api.Source.Core.Interfaces.Repositories
         Task<DocumentoEntity> FindById(Guid id);
         Task<DocumentoEntity> Create(DocumentoEntity doc);
         Task<int> CountPage();
+        Task<DocumentoEntity?> VerifyCode(int codigo);
     }
 }

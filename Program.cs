@@ -1,6 +1,8 @@
 using cadastro_documento_api.Source.Core.Interfaces.Repositories;
+using cadastro_documento_api.Source.Core.Interfaces.Services;
 using cadastro_documento_api.Source.Infraestructure.Contexts;
 using cadastro_documento_api.Source.Infraestructure.Repositories;
+using cadastro_documento_api.Source.Infraestructure.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<IDocumentoRepository, DocumentoRepository>();
 builder.Services.AddScoped<IFileRepository, FileRepository>();
+builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddDbContext<CadastroDocumentosContex>(options => options.UseLazyLoadingProxies().UseMySql("server=localhost;database=homedb;user=root;password=root", ServerVersion.Parse("8.0.31-mysql")));
 
 builder.Services.AddControllers();

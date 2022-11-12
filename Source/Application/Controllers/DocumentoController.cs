@@ -1,7 +1,7 @@
 ﻿using cadastro_documento_api.Source.Core.DTOs;
 using cadastro_documento_api.Source.Core.Entities;
 using cadastro_documento_api.Source.Core.Interfaces.Repositories;
-using Microsoft.AspNetCore.Http;
+using cadastro_documento_api.Source.Core.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace cadastro_documento_api.Source.Application.Controllers
@@ -11,12 +11,12 @@ namespace cadastro_documento_api.Source.Application.Controllers
     public class DocumentoController : ControllerBase
     {
         private readonly IDocumentoRepository _docRepository;
-        private readonly IFileRepository _fileRepository;
+        private readonly IFileService _fileService;
 
-        public DocumentoController(IDocumentoRepository docRepository, IFileRepository fileRepository)
+        public DocumentoController(IDocumentoRepository docRepository, IFileService fileService)
         {
             _docRepository = docRepository;
-            _fileRepository = fileRepository;
+            _fileService = fileService;
         }
 
         [HttpGet]
@@ -41,7 +41,6 @@ namespace cadastro_documento_api.Source.Application.Controllers
                 results.Add(dto);
             }
 
-
             return Ok(new
             {
                 totalPage = totalPage,
@@ -53,33 +52,18 @@ namespace cadastro_documento_api.Source.Application.Controllers
         [HttpPost]
         public async Task<ActionResult<DocumentoEntity>> Create([FromForm] DocumentoDTO docDTO)
         {
-            byte[] data = null;
+            var isCode = await _docRepository.VerifyCode(docDTO.Codigo);
 
-            using (var stream = new MemoryStream())
-            {
-                await docDTO.Arquivo.CopyToAsync(stream);
-                stream.ToArray();
+            if (isCode != null) return BadRequest(new {Error = "Código já existe na base de dados" });
 
-                data = stream.ToArray();
-
-                File(stream.ToArray(), docDTO.Arquivo.ContentType, docDTO.Arquivo.FileName);
-            }
-
-            FileEntity file = new()
-            {
-                FileBytes = data,
-                FileName = docDTO.Arquivo.FileName,
-                ContentType = docDTO.Arquivo.ContentType
-            };
-
-            await _fileRepository.Create(file);
-
+            Guid fileId = await _fileService.ExecuteAsync(docDTO.Arquivo);
+            //File(stream.ToArray(), docDTO.Arquivo.ContentType, docDTO.Arquivo.FileName);
 
             DocumentoEntity doc = new()
             {
                 Codigo = docDTO.Codigo,
                 Categoria = docDTO.Categoria,
-                ArquivoId = file.Id,
+                ArquivoId = fileId,
                 Titulo = docDTO.Titulo,
                 ProcessoId = docDTO.ProcessoId,
                 CriadoEm = DateTime.Now

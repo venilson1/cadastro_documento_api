@@ -56,5 +56,11 @@ namespace cadastro_documento_api.Source.Infraestructure.Repositories
                 Processo = x.Processo,
             }).FirstOrDefaultAsync(x => x.Id == id);
         }
+
+        public async Task<DocumentoEntity?> VerifyCode(int codigo)
+        {
+            var verifyCode = await _dbContex.Documento.Where(x => x.Codigo == codigo).FirstOrDefaultAsync();
+            return verifyCode;
+        }
     }
 }
