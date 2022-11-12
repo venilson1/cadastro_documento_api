@@ -35,15 +35,14 @@ namespace cadastro_documento_api.Source.Infraestructure.Repositories
         {
             return await _dbContex.Documento.Select(x => new DocumentoEntity {
                 Id = x.Id,
-                ArquivoId = x.ArquivoId,
+                Titulo = x.Titulo,
                 Categoria = x.Categoria,
                 Codigo = x.Codigo,
-                Titulo = x.Titulo,
                 ProcessoId = x.ProcessoId,
-                Processo = x.Processo,
+                ArquivoId = x.ArquivoId,
+                Processo = x.Processo
             }).OrderBy(x => x.Titulo).AsNoTracking().Skip((page * 8)).Take(8).ToListAsync();
         }
-
         public async Task<DocumentoEntity> FindById(Guid id)
         {
             return await _dbContex.Documento.Select(x => new DocumentoEntity 

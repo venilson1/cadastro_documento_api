@@ -20,9 +20,9 @@ namespace cadastro_documento_api.Source.Infraestructure.Repositories
             return file;
         }
 
-        public async Task<FileEntity> FindById(Guid id)
+        public async Task<FileEntity> FindById(Guid arquivoId)
         {
-            return await _dbContex.File.FirstOrDefaultAsync(x => x.Id == id);
+            return await _dbContex.File.FirstOrDefaultAsync(x => x.Id == arquivoId);
         }
     }
 }

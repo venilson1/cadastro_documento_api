@@ -1,6 +1,7 @@
 ﻿using cadastro_documento_api.Source.Core.DTOs;
 using cadastro_documento_api.Source.Core.Entities;
 using cadastro_documento_api.Source.Core.Interfaces.Repositories;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace cadastro_documento_api.Source.Application.Controllers
@@ -26,11 +27,26 @@ namespace cadastro_documento_api.Source.Application.Controllers
             List<DocumentoEntity> docs = await _docRepository.FindAll(page);
             var totalPage = await _docRepository.CountPage();
 
+            List<ReadDocumentoDTO> results = new();
+
+            foreach(var doc in docs)
+            {
+                ReadDocumentoDTO dto = new();
+                dto.Id = doc.Id;
+                dto.Titulo = doc.Titulo;
+                dto.Codigo = doc.Codigo;
+                dto.Categoria = doc.Categoria;
+                dto.ProcessoNome = doc.Processo.Nome;
+                dto.ArquivoId = doc.ArquivoId;
+                results.Add(dto);
+            }
+
+
             return Ok(new
             {
                 totalPage = totalPage,
                 page = page,
-                data = docs,
+                data = results,
             });
         }
 
@@ -72,13 +88,22 @@ namespace cadastro_documento_api.Source.Application.Controllers
             await _docRepository.Create(doc);
             return CreatedAtAction(nameof(FindById), new { Id = doc.Id }, doc);
         }
-
+        
         [HttpGet("{id}")]
         public async Task<ActionResult<DocumentoEntity>> FindById(Guid id)
         {
             DocumentoEntity doc = await _docRepository.FindById(id);
             if (doc == null) return NotFound();
-            return Ok(doc);
+
+            ReadDocumentoDTO dto = new();
+            dto.Id = doc.Id;
+            dto.Titulo = doc.Titulo;
+            dto.Codigo = doc.Codigo;
+            dto.Categoria = doc.Categoria;
+            dto.ProcessoNome = doc.Processo.Nome;
+            dto.ArquivoId = doc.ArquivoId;
+
+            return Ok(dto);
         }
     }
 }
