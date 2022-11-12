@@ -56,7 +56,7 @@ namespace cadastro_documento_api.Source.Application.Controllers
         {
             var isCode = await _docRepository.VerifyCode(docDTO.Codigo);
 
-            if (isCode != null) return BadRequest(new {Error = "Código já existe na base de dados" });
+            if (isCode != null) return BadRequest(new {Errors = new { Codigo = new string[1] { "Código já existe na base de dados" } } });
 
             Guid fileId = await _fileService.ExecuteAsync(docDTO.Arquivo);
             //File(stream.ToArray(), docDTO.Arquivo.ContentType, docDTO.Arquivo.FileName);
