@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using cadastro_documento_api.Source.Infraestructure.Util;
 
 namespace cadastro_documento_api.Source.Core.DTOs
 {
@@ -14,6 +15,7 @@ namespace cadastro_documento_api.Source.Core.DTOs
         [Required(ErrorMessage = "O Campo Categoria é obrigatório")]
         public string Categoria { get; set; }
         [Required(ErrorMessage = "O Campo Arquivo é obrigatório")]
+        [AllowedExtensionsAttributeUtil(new string[] { ".pdf", ".doc", ".xls", "docx", "xlsx" })]
         public IFormFile Arquivo { get; set; }
     }
 }
