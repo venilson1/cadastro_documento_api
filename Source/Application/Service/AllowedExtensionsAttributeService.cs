@@ -2,10 +2,10 @@
 
 namespace cadastro_documento_api.Source.Infraestructure.Util
 {
-    public class AllowedExtensionsAttributeUtil : ValidationAttribute
+    public class AllowedExtensionsAttributeService : ValidationAttribute
     {
         private readonly string[] _extensions;
-        public AllowedExtensionsAttributeUtil(string[] extensions)
+        public AllowedExtensionsAttributeService(string[] extensions)
         {
             _extensions = extensions;
         }
