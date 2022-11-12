@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using cadastro_documento_api.Source.Infraestructure.Contexts;
 
@@ -10,9 +11,10 @@ using cadastro_documento_api.Source.Infraestructure.Contexts;
 namespace cadastro_documento_api.Migrations
 {
     [DbContext(typeof(CadastroDocumentosContex))]
-    partial class CadastroDocumentosContexModelSnapshot : ModelSnapshot
+    [Migration("20221111032935_Module_FileEntity")]
+    partial class Module_FileEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,12 +23,13 @@ namespace cadastro_documento_api.Migrations
 
             modelBuilder.Entity("cadastro_documento_api.Source.Core.Entities.DocumentoEntity", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("int");
 
-                    b.Property<Guid>("ArquivoId")
-                        .HasColumnType("char(36)");
+                    b.Property<string>("Arquivo")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Categoria")
                         .IsRequired()
@@ -47,9 +50,6 @@ namespace cadastro_documento_api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ArquivoId")
-                        .IsUnique();
-
                     b.HasIndex("ProcessoId");
 
                     b.ToTable("Documento");
@@ -57,9 +57,9 @@ namespace cadastro_documento_api.Migrations
 
             modelBuilder.Entity("cadastro_documento_api.Source.Core.Entities.FileEntity", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("int");
 
                     b.Property<string>("ContentType")
                         .IsRequired()
@@ -99,52 +99,38 @@ namespace cadastro_documento_api.Migrations
                         new
                         {
                             Id = 1,
-                            CriadoEm = new DateTime(2022, 11, 11, 21, 55, 50, 724, DateTimeKind.Local).AddTicks(2966),
+                            CriadoEm = new DateTime(2022, 11, 11, 0, 29, 34, 966, DateTimeKind.Local).AddTicks(7643),
                             Nome = "A"
                         },
                         new
                         {
                             Id = 2,
-                            CriadoEm = new DateTime(2022, 11, 11, 21, 55, 50, 724, DateTimeKind.Local).AddTicks(2979),
+                            CriadoEm = new DateTime(2022, 11, 11, 0, 29, 34, 966, DateTimeKind.Local).AddTicks(7656),
                             Nome = "B"
                         },
                         new
                         {
                             Id = 3,
-                            CriadoEm = new DateTime(2022, 11, 11, 21, 55, 50, 724, DateTimeKind.Local).AddTicks(2981),
+                            CriadoEm = new DateTime(2022, 11, 11, 0, 29, 34, 966, DateTimeKind.Local).AddTicks(7659),
                             Nome = "C"
                         },
                         new
                         {
                             Id = 4,
-                            CriadoEm = new DateTime(2022, 11, 11, 21, 55, 50, 724, DateTimeKind.Local).AddTicks(2982),
+                            CriadoEm = new DateTime(2022, 11, 11, 0, 29, 34, 966, DateTimeKind.Local).AddTicks(7660),
                             Nome = "D"
                         });
                 });
 
             modelBuilder.Entity("cadastro_documento_api.Source.Core.Entities.DocumentoEntity", b =>
                 {
-                    b.HasOne("cadastro_documento_api.Source.Core.Entities.FileEntity", "Arquivo")
-                        .WithOne("Documeto")
-                        .HasForeignKey("cadastro_documento_api.Source.Core.Entities.DocumentoEntity", "ArquivoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("cadastro_documento_api.Source.Core.Entities.ProcessoEntity", "Processo")
                         .WithMany("Documentos")
                         .HasForeignKey("ProcessoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Arquivo");
-
                     b.Navigation("Processo");
-                });
-
-            modelBuilder.Entity("cadastro_documento_api.Source.Core.Entities.FileEntity", b =>
-                {
-                    b.Navigation("Documeto")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("cadastro_documento_api.Source.Core.Entities.ProcessoEntity", b =>

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using cadastro_documento_api.Source.Infraestructure.Contexts;
 
@@ -10,9 +11,10 @@ using cadastro_documento_api.Source.Infraestructure.Contexts;
 namespace cadastro_documento_api.Migrations
 {
     [DbContext(typeof(CadastroDocumentosContex))]
-    partial class CadastroDocumentosContexModelSnapshot : ModelSnapshot
+    [Migration("20221112005550_relational_file_document")]
+    partial class relational_file_document
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
