@@ -35,7 +35,7 @@ namespace cadastro_documento_api.Source.Infraestructure.Repositories
         {
             return await _dbContex.Documento.Select(x => new DocumentoEntity {
                 Id = x.Id,
-                Arquivo = x.Arquivo,
+                ArquivoId = x.ArquivoId,
                 Categoria = x.Categoria,
                 Codigo = x.Codigo,
                 Titulo = x.Titulo,
@@ -44,12 +44,12 @@ namespace cadastro_documento_api.Source.Infraestructure.Repositories
             }).OrderBy(x => x.Titulo).AsNoTracking().Skip((page * 8)).Take(8).ToListAsync();
         }
 
-        public async Task<DocumentoEntity> FindById(int id)
+        public async Task<DocumentoEntity> FindById(Guid id)
         {
             return await _dbContex.Documento.Select(x => new DocumentoEntity 
             { 
                 Id = x.Id,
-                Arquivo = x.Arquivo,
+                ArquivoId = x.ArquivoId,
                 Categoria = x.Categoria,
                 Codigo = x.Codigo,
                 Titulo = x.Titulo,

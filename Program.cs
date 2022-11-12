@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddScoped<IDocumentoRepository, DocumentoRepository>();
+builder.Services.AddScoped<IFileRepository, FileRepository>();
 builder.Services.AddDbContext<CadastroDocumentosContex>(options => options.UseLazyLoadingProxies().UseMySql("server=localhost;database=homedb;user=root;password=root", ServerVersion.Parse("8.0.31-mysql")));
 
 builder.Services.AddControllers();
