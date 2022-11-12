@@ -11,12 +11,14 @@ namespace cadastro_documento_api.Source.Application.Controllers
     public class DocumentoController : ControllerBase
     {
         private readonly IDocumentoRepository _docRepository;
+        private readonly IFileRepository _fileRepository;
         private readonly IFileService _fileService;
 
-        public DocumentoController(IDocumentoRepository docRepository, IFileService fileService)
+        public DocumentoController(IDocumentoRepository docRepository, IFileService fileService, IFileRepository fileRepository)
         {
             _docRepository = docRepository;
             _fileService = fileService;
+            _fileRepository = fileRepository;
         }
 
         [HttpGet]
@@ -77,6 +79,7 @@ namespace cadastro_documento_api.Source.Application.Controllers
         public async Task<ActionResult<DocumentoEntity>> FindById(Guid id)
         {
             DocumentoEntity doc = await _docRepository.FindById(id);
+            
             if (doc == null) return NotFound();
 
             ReadDocumentoDTO dto = new();
@@ -88,6 +91,16 @@ namespace cadastro_documento_api.Source.Application.Controllers
             dto.ArquivoId = doc.ArquivoId;
 
             return Ok(dto);
+        }
+
+        [HttpGet("{arquivoId}/download")]
+        public async Task<ActionResult<DocumentoEntity>> Download(Guid arquivoId)
+        {
+            FileEntity file = await _fileRepository.FindById(arquivoId);
+
+            if (file == null) return NotFound();
+
+            return File(file.FileBytes, file.ContentType, file.FileName);
         }
     }
 }
