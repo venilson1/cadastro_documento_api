@@ -31,7 +31,7 @@ namespace cadastro_documento_api.Source.Infraestructure.Repositories
             return doc;
         }
 
-        public async Task<List<DocumentoEntity>> FindAll(int page)
+        public async Task<List<DocumentoEntity>> FindAll()
         {
             return await _dbContex.Documento.Select(x => new DocumentoEntity {
                 Id = x.Id,
@@ -41,7 +41,7 @@ namespace cadastro_documento_api.Source.Infraestructure.Repositories
                 ProcessoId = x.ProcessoId,
                 ArquivoId = x.ArquivoId,
                 Processo = x.Processo
-            }).OrderBy(x => x.Titulo).AsNoTracking().Skip((page * 8)).Take(8).ToListAsync();
+            }).OrderBy(x => x.Titulo).ToListAsync();
         }
         public async Task<DocumentoEntity> FindById(Guid id)
         {

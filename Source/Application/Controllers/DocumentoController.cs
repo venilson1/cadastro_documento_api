@@ -22,12 +22,9 @@ namespace cadastro_documento_api.Source.Application.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<DocumentoEntity>>> FindAll(
-            [FromQuery] int page = 0
-        )
+        public async Task<ActionResult<List<DocumentoEntity>>> FindAll()
         {
-            List<DocumentoEntity> docs = await _docRepository.FindAll(page);
-            var totalPage = await _docRepository.CountPage();
+            List<DocumentoEntity> docs = await _docRepository.FindAll();
 
             List<ReadDocumentoDTO> results = new();
 
@@ -45,8 +42,6 @@ namespace cadastro_documento_api.Source.Application.Controllers
 
             return Ok(new
             {
-                totalPage = totalPage,
-                page = page,
                 data = results,
             });
         }
