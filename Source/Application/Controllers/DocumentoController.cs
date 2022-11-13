@@ -40,10 +40,7 @@ namespace cadastro_documento_api.Source.Application.Controllers
                 results.Add(dto);
             }
 
-            return Ok(new
-            {
-                data = results,
-            });
+            return Ok(results);
         }
 
         [HttpPost]
